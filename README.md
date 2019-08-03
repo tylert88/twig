@@ -10,21 +10,25 @@ To install this adapter run this command:
 
 then open your fractal.js file and add following lines:
 
-```
+```javascript
 /*
  * Require the Twig adapter
  */
-const twigAdapter = require('@frctl/twig')();
+const twigAdapter = require("@frctl/twig")();
 fractal.components.engine(twigAdapter);
-fractal.components.set('ext', '.twig');
+fractal.components.set("ext", ".twig");
 ```
 
 ## Extending with a custom config
-```
+
+```javascript
 /*
  * Require the Twig adapter
  */
 const twigAdapter = require('@frctl/twig')({
+    namespaces: {
+      'Components': ''
+    }
     // if pristine is set to true, bundled filters, functions, tests
     // and tags are not registered.
     // default is false
@@ -39,6 +43,12 @@ const twigAdapter = require('@frctl/twig')({
     // this will change your includes to {% include '%button' %}
     // default is '@'
     handlePrefix: '%',
+
+    // set a base path for twigjs
+    // Setting base to '/' will make sure all resolved render paths
+    // start at the defined components dir, instead of being relative.
+    // default is null
+    base: '/',
 
     // register custom filters
     filters: {
@@ -116,10 +126,10 @@ const twigAdapter = require('@frctl/twig')({
 
 ```
 
-
 ## Using external plugins
 
 An example to use [twig-js-markdown](https://github.com/ianbytchek/twig-js-markdown):
+
 ```
 const twigMarkdown = require('twig-markdown');
 const instance = fractal.components.engine(twigAdapter);
@@ -132,6 +142,7 @@ instance.twig.extend(twigMarkdown);
 ## Included filters
 
 ### path
+
 Takes a root-relative path and re-writes it if required to make it work in static HTML exports.
 
 It is strongly recommended to use this filter whenever you need to link to any static assets from your templates.
@@ -139,6 +150,7 @@ It is strongly recommended to use this filter whenever you need to link to any s
 The path argument should begin with a slash and be relative to the web root. During a static HTML export this path will then be re-written to be relative to the current page.
 
 Usage:
+
 ```
 {{ '/css/my-stylesheet.css'|path }}
 ```
@@ -146,9 +158,11 @@ Usage:
 ## Included tags
 
 ### render
+
 The render tag renders a component (referenced by its handle) using the context data provided to it. If no data is provided, it will use the context data defined within the component's configuration file, if it has one.
 
 Usage:
+
 ```
 {% render "@component" with {some: 'values'} %}
 ```

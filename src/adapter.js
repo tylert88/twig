@@ -165,7 +165,8 @@ class TwigAdapter extends Fractal.Adapter {
             ? `${self._config.handlePrefix}${meta.self.handle}`
             : tplPath,
           precompiled: str,
-          namespaces: self._config.namespaces || {}
+          namespaces: self._config.namespaces || {},
+          base: self_config.base
         });
         resolve(template.render(context));
       } catch (e) {
@@ -185,7 +186,9 @@ module.exports = function(config) {
   config = _.defaults(config || {}, {
     pristine: false,
     handlePrefix: "@",
-    importContext: false
+    importContext: false,
+    namespaces: {},
+    base: null
   });
 
   return {
