@@ -166,7 +166,7 @@ class TwigAdapter extends Fractal.Adapter {
             : tplPath,
           precompiled: str,
           namespaces: self._config.namespaces || {},
-          base: self_config.base
+          base: self._config.base
         });
         resolve(template.render(context));
       } catch (e) {
